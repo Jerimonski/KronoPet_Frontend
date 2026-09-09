@@ -1,78 +1,92 @@
-# React + TypeScript + Vite
+# 🐾 Vety - Sistema Clínico Veterinario (Frontend Desktop/Web)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 📌 Descripción General
 
-Currently, two official plugins are available:
+Frontend interactivo desarrollado con **React**, **Vite** y **Tailwind CSS** para la plataforma de escritorio y gestión clínica de uso profesional exclusivo del **Médico Veterinario**.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+El sistema administra la atención médica en un entorno cerrado integrado con el backend en NestJS (puerto `3001`). Permite el flujo continuo desde la landing page pública hasta el inicio de sesión y el registro de eventos médicos inmutables.
 
-## React Compiler
+---
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+## 📂 Arquitectura de Directorios y Carpetas (`src/`)
 
-Note: This will impact Vite dev & build performances.
-You can also try [the experimental native React Compiler support in plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md#rust-react-compiler) by using `compiler: true` in the plugin options instead of using the Babel plugin.
+A continuación se detalla la responsabilidad y el contenido de cada carpeta del proyecto:
 
-## Expanding the ESLint configuration
+### ⚙️ `src/config/`
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+* Contiene los archivos de configuración global de la aplicación.
+* **Uso:** Variables de entorno centralizadas (`env.config.js`) e integración de temas visuales o modo oscuro (`theme.config.js`).
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### 🧠 `src/core/` (Núcleo Compartido)
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+Contiene la lógica transversal y no ligada a un módulo específico:
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+* **`core/api/`**: Instancia centralizada de cliente Axios o Fetch (`api.client.js`) con interceptores para enviar el token JWT en las peticiones. Definición de rutas y endpoints (`endpoints.js`).
+* **`core/utils/`**: Funciones auxiliares puras como validadores de formularios (RUT, formato de números) y formateadores de fechas ISO.
+* **`core/hooks/`**: Custom Hooks reutilizables para llamadas a la API o gestión de estados de carga (`useFetch.js`).
 
-```
+### 📦 `src/features/` (Módulos de Negocio)
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+Estructura modular dividida por características (Feature-First):
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+1. **`features/landing/`**
+   * **`pages/LandingPage.jsx`**: Home o página web comercial pública de Vety.
+   * **`components/`**: Componentes específicos de la web comercial como `Navbar.jsx` (con botón de acceso al login), `Hero.jsx` y tarjetas informativas.
+2. **`features/auth/`**
+   * **`pages/LoginPage.jsx`**: Vista principal del portal de acceso.
+   * **`components/LoginForm.jsx`**: Formulario de credenciales (email y contraseña).
+   * **`context/AuthContext.jsx`**: Estado global de la sesión, manejo del token JWT de NestJS y funciones de login/logout.
+3. **`features/dashboard/`**
+   * **`pages/DashboardPage.jsx`**: Pantalla principal post-login del veterinario.
+   * **`components/`**: `Sidebar.jsx` (menú lateral), `Header.jsx` (perfil del médico y botón de cierre de sesión) y `MetricsGrid.jsx` (tarjetas con resúmenes del día).
+4. **`features/medical-events/`**
+   * **`pages/NewConsultationPage.jsx`**: Vista para registrar atenciones de salud.
+   * **`components/`**: Formulario de registro clínico (`ConsultationForm.jsx`) y el menú cerrado/readonly para categorías de consulta (`ReasonSelect.jsx`).
+5. **`features/pets/`**
+   * **`pages/RegisterPatientPage.jsx`**: Pantalla para enrolamiento de pacientes.
+   * **`components/`**: Formulario de registro para tutores/dueños (`TutorForm.jsx`) y para asociar mascotas (`PetForm.jsx`).
+6. **`features/history/`**
+   * **`pages/ClinicalHistoryPage.jsx`**: Vista de la ficha médica y búsquedas.
+   * **`components/`**: Buscador por paciente/dueño (`PatientSearch.jsx`) y la línea de tiempo médica (`Timeline.jsx`).
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### 🎨 `src/shared/` (Recursos Reutilizables de UI)
 
+* **`shared/components/`**: Componentes de UI atómicos como botones estilizados (`Button.jsx`), inputs (`Input.jsx`), modales (`Modal.jsx`) y el panel simulador de API (`ApiDebugger.jsx`).
+* **`shared/layouts/`**: Envoltorios de diseño base como `MainLayout.jsx` que estructura la navegación del Dashboard (Sidebar + Header + Contenido).
+
+---
+
+## 🛠️ Especificación de Endpoints (Backend NestJS - Puerto 3001)
+
+### 1. Autenticación (`/api/v1/auth`)
+
+* `POST /auth/login` → Envía `{ email, password }` y recibe el token JWT de acceso.
+
+### 2. Pacientes y Tutores (`/api/v1`)
+
+* `POST /users` → Registra los datos del tutor (nombre, email, teléfono, RUT).
+* `POST /pets` → Asocia una mascota al ID del tutor.
+* `GET /pets` → Obtiene el listado de pacientes registrados para los selectores de la app.
+
+### 3. Registro de Atenciones Clínicas (`/api/v1/medical-events`)
+
+* `POST /medical-events` → Registra el evento médico. El campo `reason` debe restringirse a un listado cerrado:
+  * *"Consulta General"*
+  * *"Control Sano y Rutina"*
+  * *"Urgencia / Emergencia"*
+  * *"Procedimiento Quirúrgico"*
+  * *"Examen de Laboratorio"*
+  * *"Desparasitación"*
+* `GET /medical-events/pet/:petId` → Obtiene la línea de tiempo de atenciones de una mascota.
+
+---
+
+## 💻 Comandos de Inicialización
+
+```bash
+# Instalar dependencias
+npm install
+
+# Iniciar en modo desarrollo
+npm run dev
 ```
