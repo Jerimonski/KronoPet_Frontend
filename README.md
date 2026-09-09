@@ -99,11 +99,11 @@ src/
 
 Contiene la lógica transversal y no ligada a un módulo específico:
 
-* **`core/api/`**: Cliente Axios o Fetch centralizado, con interceptor para enviar el token JWT, y definición de endpoints.
-* **`core/constants/medicalReasons.js`**: Array único con los seis motivos de consulta permitidos. `ReasonSelect.jsx` y los schemas de formularios reutilizan esta constante para evitar duplicaciones.
-* **`core/utils/`**: Funciones puras para RUT, números y fechas.
-* **`core/hooks/`**: `useFetch.js` para peticiones y `useNotification.js` para publicar feedback consistente de éxito o error.
-* **`core/schemas/`**: Schemas de **Zod** para validar mascotas, tutores y consultas antes de enviar datos al backend.
+- **`core/api/`**: Cliente Axios o Fetch centralizado, con interceptor para enviar el token JWT, y definición de endpoints.
+- **`core/constants/medicalReasons.js`**: Array único con los seis motivos de consulta permitidos. `ReasonSelect.jsx` y los schemas de formularios reutilizan esta constante para evitar duplicaciones.
+- **`core/utils/`**: Funciones puras para RUT, números y fechas.
+- **`core/hooks/`**: `useFetch.js` para peticiones y `useNotification.js` para publicar feedback consistente de éxito o error.
+- **`core/schemas/`**: Schemas de **Zod** para validar mascotas, tutores y consultas antes de enviar datos al backend.
 
 ### 📦 `src/features/` (Módulos de Negocio)
 
@@ -120,24 +120,24 @@ Los servicios por feature son la única capa autorizada para armar llamadas de n
 
 ### 🎨 `src/shared/` (Recursos Reutilizables de UI)
 
-* **`shared/components/`**: Componentes atómicos (`Button`, `Input`, `Modal`) y `Notification.jsx`, que representa toasts de éxito, advertencia o error.
-* **`shared/components/ErrorBoundary.jsx`**: Captura errores inesperados de renderizado y muestra una interfaz de recuperación sin dejar la aplicación en un estado silenciosamente inconsistente.
-* **`shared/layouts/`**: Envoltorios de diseño como `MainLayout.jsx`.
+- **`shared/components/`**: Componentes atómicos (`Button`, `Input`, `Modal`) y `Notification.jsx`, que representa toasts de éxito, advertencia o error.
+- **`shared/components/ErrorBoundary.jsx`**: Captura errores inesperados de renderizado y muestra una interfaz de recuperación sin dejar la aplicación en un estado silenciosamente inconsistente.
+- **`shared/layouts/`**: Envoltorios de diseño como `MainLayout.jsx`.
 
 ### 🧪 Testing
 
 La estructura admite **Vitest** y **React Testing Library**. Los archivos `*.test.jsx` se ubican junto al componente que prueban para mantener la relación entre código y cobertura:
 
-* `shared/components/Button.test.jsx`: ejemplo de prueba de un componente compartido.
-* `features/auth/components/LoginForm.test.jsx`: ejemplo de prueba de un componente de feature.
+- `shared/components/Button.test.jsx`: ejemplo de prueba de un componente compartido.
+- `features/auth/components/LoginForm.test.jsx`: ejemplo de prueba de un componente de feature.
 
 Las pruebas deben cubrir renderizado, interacción, validaciones y estados de error, especialmente antes de confirmar registros médicos inmutables.
 
 ### 🖼️ Assets y variables de entorno
 
-* **`src/assets/images/`** y **`src/assets/icons/`** contienen recursos importados por la aplicación y se versionan junto al código.
-* **`public/`** queda reservado para archivos servidos directamente por Vite, sin procesamiento por el bundler.
-* **`.env.example`** documenta las variables requeridas sin incluir secretos.
+- **`src/assets/images/`** y **`src/assets/icons/`** contienen recursos importados por la aplicación y se versionan junto al código.
+- **`public/`** queda reservado para archivos servidos directamente por Vite, sin procesamiento por el bundler.
+- **`.env.example`** documenta las variables requeridas sin incluir secretos.
 
 ---
 
@@ -147,26 +147,26 @@ Todos los servicios consumen el backend mediante `VITE_API_URL` y el prefijo `/a
 
 ### 1. Autenticación (`/api/v1/auth`)
 
-* `POST /auth/login` → `authService.js` envía `{ email, password }` y recibe el token JWT de acceso.
-* `ProtectedRoute.jsx` utiliza el estado de `AuthContext.jsx` para proteger el dashboard y sus subrutas.
+- `POST /auth/login` → `authService.js` envía `{ email, password }` y recibe el token JWT de acceso.
+- `ProtectedRoute.jsx` utiliza el estado de `AuthContext.jsx` para proteger el dashboard y sus subrutas.
 
 ### 2. Pacientes y Tutores (`/api/v1`)
 
-* `POST /users` → `petsService.js` registra nombre, email, teléfono y RUT del tutor. Los datos se validan con `tutorSchema.js`.
-* `POST /pets` → `petsService.js` asocia una mascota al ID del tutor. Los datos se validan con `petSchema.js`.
-* `GET /pets` → `petsService.js` obtiene pacientes para los selectores de la aplicación.
+- `POST /users` → `petsService.js` registra nombre, email, teléfono y RUT del tutor. Los datos se validan con `tutorSchema.js`.
+- `POST /pets` → `petsService.js` asocia una mascota al ID del tutor. Los datos se validan con `petSchema.js`.
+- `GET /pets` → `petsService.js` obtiene pacientes para los selectores de la aplicación.
 
 ### 3. Registro de Atenciones Clínicas (`/api/v1/medical-events`)
 
-* `POST /medical-events` → `medicalEventsService.js` registra el evento después de validarlo con `consultationSchema.js`.
-* `reason` solo acepta los valores definidos en `core/constants/medicalReasons.js`:
-  * *"Consulta General"*
-  * *"Control Sano y Rutina"*
-  * *"Urgencia / Emergencia"*
-  * *"Procedimiento Quirúrgico"*
-  * *"Examen de Laboratorio"*
-  * *"Desparasitación"*
-* `GET /medical-events/pet/:petId` → `historyService.js` obtiene la línea de tiempo de atenciones de una mascota.
+- `POST /medical-events` → `medicalEventsService.js` registra el evento después de validarlo con `consultationSchema.js`.
+- `reason` solo acepta los valores definidos en `core/constants/medicalReasons.js`:
+  - _"Consulta General"_
+  - _"Control Sano y Rutina"_
+  - _"Urgencia / Emergencia"_
+  - _"Procedimiento Quirúrgico"_
+  - _"Examen de Laboratorio"_
+  - _"Desparasitación"_
+- `GET /medical-events/pet/:petId` → `historyService.js` obtiene la línea de tiempo de atenciones de una mascota.
 
 Los errores de guardado deben propagarse hasta `useNotification.js` para mostrar `Notification.jsx`. Los errores inesperados de renderizado son gestionados por `ErrorBoundary.jsx`, evitando fallos silenciosos en un sistema de registros clínicos inmutables.
 
