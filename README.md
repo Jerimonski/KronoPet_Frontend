@@ -206,6 +206,18 @@ npm run lint
 npm run build
 ```
 
+### 🎨 Integración de Tailwind CSS
+
+Tailwind CSS v4 está integrado mediante `@tailwindcss/vite`. El plugin se registra en `vite.config.ts` y las utilidades se habilitan globalmente desde `src/index.css` mediante `@import "tailwindcss";`. No se requiere un archivo `tailwind.config.js` para la configuración base.
+
+Las clases utilitarias pueden utilizarse directamente en los componentes React:
+
+```jsx
+<button className="rounded-lg bg-indigo-600 px-4 py-2 font-semibold text-white hover:bg-indigo-700">
+  Guardar registro
+</button>
+```
+
 ### 📦 Dependencias de testing
 
 La configuración de pruebas utiliza **Vitest**, **React Testing Library**, `@testing-library/jest-dom` y `jsdom`. Estas herramientas permiten probar componentes compartidos y features con un entorno DOM controlado, además de verificar las validaciones Zod y los estados de error/notificación.
