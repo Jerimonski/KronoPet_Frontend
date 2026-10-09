@@ -77,22 +77,7 @@ export default function ContactSection() {
         </div>
 
         {/* Cajas de Soporte Directo */}
-        <div className="mt-10 grid gap-6 sm:grid-cols-2">
-          <div className="card flex flex-col items-center p-6 text-center transition hover:border-primary-300">
-            <span className="text-xs font-semibold uppercase tracking-wider text-neutral-400">
-              Soporte Técnico
-            </span>
-            <a
-              href="mailto:soporte@kronopet.cl"
-              className="mt-2 font-sans text-base font-bold text-primary-700 hover:underline"
-            >
-              soporte@kronopet.cl
-            </a>
-            <p className="mt-1 font-sans text-xs text-neutral-500">
-              Atención de incidencias y consultas operativas
-            </p>
-          </div>
-
+        <div className="mt-10 mx-auto">
           <div className="card flex flex-col items-center p-6 text-center transition hover:border-primary-300">
             <span className="text-xs font-semibold uppercase tracking-wider text-neutral-400">
               Consultas Institucionales
