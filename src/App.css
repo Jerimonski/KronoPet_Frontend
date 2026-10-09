@@ -110,18 +110,21 @@
 /* ------------------------------------------------------------
    3) BASE — se aplica a toda la app
    ------------------------------------------------------------ */
-body {
-  font-family: var(--font-sans);
-  color: var(--color-neutral-800);
-  background-color: var(--color-neutral-50);
-  -webkit-font-smoothing: antialiased;
-}
+/* En @layer base para que las utilidades (ej. font-sans) puedan sobrescribirlo. */
+@layer base {
+  body {
+    font-family: var(--font-sans);
+    color: var(--color-neutral-800);
+    background-color: var(--color-neutral-50);
+    -webkit-font-smoothing: antialiased;
+  }
 
-h1,
-h2,
-h3,
-h4 {
-  font-family: var(--font-display);
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+  }
 }
 
 /* ------------------------------------------------------------
@@ -186,4 +189,72 @@ h4 {
 .input-field {
   @apply w-full rounded-xl border border-neutral-200 px-4 py-3 text-sm outline-none
            transition focus:border-primary-400;
+}
+
+/* ------------------------------------------------------------
+   5) PANEL INTERNO (dashboard del personal)
+      Controles más compactos que los de la landing.
+   ------------------------------------------------------------ */
+@layer components {
+  .app-input {
+    @apply h-10 w-full rounded-xl border border-neutral-200 bg-white px-3 text-sm
+             text-neutral-800 outline-none transition placeholder:text-neutral-400
+             focus:border-primary-500 focus:ring-3 focus:ring-primary-100
+             disabled:bg-neutral-50 disabled:text-neutral-500;
+  }
+
+  textarea.app-input {
+    @apply h-auto py-2;
+  }
+
+  .btn-app {
+    @apply inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-primary-700 px-4
+             text-sm font-semibold whitespace-nowrap text-white shadow-sm transition
+             hover:bg-primary-800 disabled:cursor-not-allowed disabled:opacity-60;
+  }
+
+  .btn-app-accent {
+    @apply inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-accent-500 px-4
+             text-sm font-semibold whitespace-nowrap text-white shadow-sm transition
+             hover:bg-accent-600 disabled:cursor-not-allowed disabled:opacity-60;
+  }
+
+  .btn-app-outline {
+    @apply inline-flex h-10 items-center justify-center gap-2 rounded-xl border border-neutral-200
+             bg-white px-4 text-sm font-medium whitespace-nowrap text-neutral-700 transition
+             hover:border-primary-300 hover:bg-primary-50 hover:text-primary-800
+             disabled:cursor-not-allowed disabled:opacity-60;
+  }
+
+  .btn-app-danger {
+    @apply inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-danger px-4
+             text-sm font-semibold whitespace-nowrap text-white transition hover:bg-red-700
+             disabled:cursor-not-allowed disabled:opacity-60;
+  }
+
+  .btn-icon {
+    @apply grid h-8 w-8 place-items-center rounded-lg text-neutral-500 transition
+             hover:bg-neutral-100 hover:text-neutral-800;
+  }
+
+  .app-table {
+    @apply w-full text-left text-sm;
+  }
+
+  .app-table th {
+    @apply bg-neutral-50 px-4 py-2.5 text-xs font-medium tracking-wide text-neutral-500 uppercase;
+  }
+
+  .app-table td {
+    @apply border-t border-neutral-100 px-4 py-3 align-middle;
+  }
+
+  /* Relleno rayado de las barras (inspirado en la referencia del dashboard) */
+  .bar-stripes {
+    background-image: repeating-linear-gradient(
+      -45deg,
+      rgb(255 255 255 / 0.35) 0 3px,
+      transparent 3px 7px
+    );
+  }
 }

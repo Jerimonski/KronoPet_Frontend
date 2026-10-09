@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router";
 import Navbar from "../components/Navbar";
 import Hero from "../components/Hero";
 import MedicalCategories from "../components/MedicalCategories";
@@ -8,9 +9,8 @@ import ContactSection from "../components/ContactSection";
 import Footer from "../components/Footer";
 
 export default function HomePage() {
-  const handleAccessClick = () => {
-    window.location.href = "/login";
-  };
+  const navigate = useNavigate();
+  const handleAccessClick = () => navigate("/login");
 
   return (
     <div className="min-h-screen bg-neutral-50">
